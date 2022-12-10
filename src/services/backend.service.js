@@ -18,4 +18,40 @@ export default class BackendService {
 
     return userData;
   };
+
+  static check = async () => {
+    const usuario = LocalStorageUtils.read("usuario");
+    if (!usuario) {
+      throw Error();
+    }
+    const url = `${backendurl}/users/check`;
+    const response = await axios.post(url, null, {
+      headers: { Authorization: `Bearer ${usuario.accessToken}` },
+    });
+    const userData = response.data.data;
+    return userData;
+  };
+
+  static obtenerReservas = async (pagina, limite) => {
+    const usuario = LocalStorageUtils.read("usuario");
+    if (!usuario) {
+      throw Error();
+    }
+    const url = `${backendurl}/agenda/reservas?pagina=${pagina}&limite=${limite}`;
+    const response = await axios.get(url, {
+      headers: { Authorization: `Bearer ${usuario.accessToken}` },
+    });
+    return response.data.data;
+  };
+
+  static eliminarReserva = async (reservaId) => {
+    const usuario = LocalStorageUtils.read("usuario");
+    if (!usuario) {
+      throw Error();
+    }
+    const url = `${backendurl}/agenda/reservas/${reservaId}`;
+    await axios.delete(url, {
+      headers: { Authorization: `Bearer ${usuario.accessToken}` },
+    });
+  };
 }

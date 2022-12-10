@@ -1,6 +1,12 @@
 <template>
   <div class="main">
-    <v-overlay :value="logoutOverlay" absolute z-index="999">
+    <v-overlay
+      :value="logoutOverlay || loading"
+      absolute
+      color="white"
+      opacity="1"
+      z-index="999"
+    >
       <v-progress-circular
         :size="70"
         :width="7"
@@ -53,6 +59,7 @@
 </template>
 
 <script>
+import BackendService from "@/services/backend.service";
 import LocalStorageUtils from "@/utils/local-storage.utils";
 import Vue from "vue";
 
@@ -84,8 +91,28 @@ export default Vue.extend({
       },
     ],
     logoutOverlay: false,
+    loading: true,
   }),
+  beforeMount() {
+    this.checkUser();
+  },
   methods: {
+    async checkUser() {
+      this.loading = true;
+      try {
+        const usuario = LocalStorageUtils.read("usuario");
+        if (!usuario) {
+          this.logout();
+          return;
+        }
+        await BackendService.check();
+      } catch (error) {
+        // Handle error
+        this.logout();
+      } finally {
+        this.loading = false;
+      }
+    },
     async logout() {
       this.logoutOverlay = true;
       setTimeout(() => {

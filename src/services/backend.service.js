@@ -54,4 +54,66 @@ export default class BackendService {
       headers: { Authorization: `Bearer ${usuario.accessToken}` },
     });
   };
+
+  // Clientes
+  static obtenerClientes = async (pagina, limite) => {
+    const usuario = LocalStorageUtils.read("usuario");
+    if (!usuario) {
+      throw Error();
+    }
+    const url = `${backendurl}/clientes?pagina=${pagina}&limite=${limite}`;
+    const response = await axios.get(url, {
+      headers: { Authorization: `Bearer ${usuario.accessToken}` },
+    });
+    return response.data.data;
+  };
+
+  static crearCliente = async (cliente) => {
+    const usuario = LocalStorageUtils.read("usuario");
+    if (!usuario) {
+      throw Error();
+    }
+    const url = `${backendurl}/clientes`;
+    const response = await axios.post(url, cliente, {
+      headers: { Authorization: `Bearer ${usuario.accessToken}` },
+    });
+    return response.data.data;
+  };
+
+  static obtenerCliente = async (clienteId) => {
+    const usuario = LocalStorageUtils.read("usuario");
+    if (!usuario) {
+      throw Error();
+    }
+    const url = `${backendurl}/clientes/${clienteId}`;
+    const response = await axios.get(url, {
+      headers: { Authorization: `Bearer ${usuario.accessToken}` },
+    });
+    return response.data.data;
+  };
+
+  // Mascotas
+  static crearMascota = async (mascota) => {
+    const usuario = LocalStorageUtils.read("usuario");
+    if (!usuario) {
+      throw Error();
+    }
+    const url = `${backendurl}/mascotas`;
+    const response = await axios.post(url, mascota, {
+      headers: { Authorization: `Bearer ${usuario.accessToken}` },
+    });
+    return response.data.data;
+  };
+
+  static obtenerMascotasPorCliente = async (clienteId) => {
+    const usuario = LocalStorageUtils.read("usuario");
+    if (!usuario) {
+      throw Error();
+    }
+    const url = `${backendurl}/mascotas/cliente/${clienteId}`;
+    const response = await axios.get(url, {
+      headers: { Authorization: `Bearer ${usuario.accessToken}` },
+    });
+    return response.data.data;
+  };
 }

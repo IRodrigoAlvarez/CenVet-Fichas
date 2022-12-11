@@ -30,6 +30,13 @@ const routes = [
           ),
       },
       {
+        path: "clientes/:clienteId",
+        component: () =>
+          import(
+            /* webpackChunkName: "clienteDetail" */ "../views/ClienteDetailView.vue"
+          ),
+      },
+      {
         path: "agenda",
         component: () =>
           import(/* webpackChunkName: "agenda" */ "../views/AgendaView.vue"),

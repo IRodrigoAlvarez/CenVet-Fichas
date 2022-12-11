@@ -23,4 +23,7 @@ export default {
 h1 {
   font-size: 1.5rem;
 }
+h2 {
+  font-size: 1.25rem;
+}
 </style>

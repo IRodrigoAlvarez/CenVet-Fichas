@@ -70,11 +70,6 @@ export default Vue.extend({
     group: null,
     items: [
       {
-        title: "Inicio",
-        icon: "mdi-home",
-        link: "/",
-      },
-      {
         title: "Clientes",
         icon: "mdi-account",
         link: "/clientes",

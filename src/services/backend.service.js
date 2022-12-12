@@ -92,6 +92,18 @@ export default class BackendService {
     return response.data.data;
   };
 
+  static actualizarCliente = async (clienteId, cliente) => {
+    const usuario = LocalStorageUtils.read("usuario");
+    if (!usuario) {
+      throw Error();
+    }
+    const url = `${backendurl}/clientes/${clienteId}`;
+    const response = await axios.put(url, cliente, {
+      headers: { Authorization: `Bearer ${usuario.accessToken}` },
+    });
+    return response.data.data;
+  };
+
   // Mascotas
   static crearMascota = async (mascota) => {
     const usuario = LocalStorageUtils.read("usuario");
@@ -105,6 +117,18 @@ export default class BackendService {
     return response.data.data;
   };
 
+  static obtenerMascota = async (mascotaId) => {
+    const usuario = LocalStorageUtils.read("usuario");
+    if (!usuario) {
+      throw Error();
+    }
+    const url = `${backendurl}/mascotas/${mascotaId}`;
+    const response = await axios.get(url, {
+      headers: { Authorization: `Bearer ${usuario.accessToken}` },
+    });
+    return response.data.data;
+  };
+
   static obtenerMascotasPorCliente = async (clienteId) => {
     const usuario = LocalStorageUtils.read("usuario");
     if (!usuario) {
@@ -112,6 +136,67 @@ export default class BackendService {
     }
     const url = `${backendurl}/mascotas/cliente/${clienteId}`;
     const response = await axios.get(url, {
+      headers: { Authorization: `Bearer ${usuario.accessToken}` },
+    });
+    return response.data.data;
+  };
+
+  static actualizarMascota = async (mascotaId, mascota) => {
+    const usuario = LocalStorageUtils.read("usuario");
+    if (!usuario) {
+      throw Error();
+    }
+    const url = `${backendurl}/mascotas/${mascotaId}`;
+    const response = await axios.put(url, mascota, {
+      headers: { Authorization: `Bearer ${usuario.accessToken}` },
+    });
+    return response.data.data;
+  };
+
+  // Registros
+  static obtenerRegistrosMascota = async (mascotaId, pagina, limite) => {
+    const usuario = LocalStorageUtils.read("usuario");
+    if (!usuario) {
+      throw Error();
+    }
+    const url = `${backendurl}/registros/mascota/${mascotaId}?pagina=${pagina}&limite=${limite}`;
+    const response = await axios.get(url, {
+      headers: { Authorization: `Bearer ${usuario.accessToken}` },
+    });
+    return response.data.data;
+  };
+
+  static crearRegistro = async (registro) => {
+    const usuario = LocalStorageUtils.read("usuario");
+    if (!usuario) {
+      throw Error();
+    }
+    const url = `${backendurl}/registros`;
+    const response = await axios.post(url, registro, {
+      headers: { Authorization: `Bearer ${usuario.accessToken}` },
+    });
+    return response.data.data;
+  };
+
+  static actualizarRegistro = async (registroId, registro) => {
+    const usuario = LocalStorageUtils.read("usuario");
+    if (!usuario) {
+      throw Error();
+    }
+    const url = `${backendurl}/registros/${registroId}`;
+    const response = await axios.put(url, registro, {
+      headers: { Authorization: `Bearer ${usuario.accessToken}` },
+    });
+    return response.data.data;
+  };
+
+  static eliminarRegistro = async (registroId) => {
+    const usuario = LocalStorageUtils.read("usuario");
+    if (!usuario) {
+      throw Error();
+    }
+    const url = `${backendurl}/registros/${registroId}`;
+    const response = await axios.delete(url, {
       headers: { Authorization: `Bearer ${usuario.accessToken}` },
     });
     return response.data.data;

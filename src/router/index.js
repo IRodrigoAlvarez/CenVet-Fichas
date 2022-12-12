@@ -19,8 +19,11 @@ const routes = [
     children: [
       {
         path: "",
-        component: () =>
-          import(/* webpackChunkName: "menu" */ "../views/MenuView.vue"),
+        redirect: () => {
+          // the function receives the target route as the argument
+          // we return a redirect path/location here.
+          return { path: "/clientes" };
+        },
       },
       {
         path: "clientes",
@@ -34,6 +37,13 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "clienteDetail" */ "../views/ClienteDetailView.vue"
+          ),
+      },
+      {
+        path: "mascotas/:mascotaId",
+        component: () =>
+          import(
+            /* webpackChunkName: "clienteDetail" */ "../views/MascotaView.vue"
           ),
       },
       {

@@ -86,37 +86,55 @@
       <h1>Cliente</h1>
       <v-switch v-model="editar" label="Editar"></v-switch>
     </div>
-    <div v-if="cliente && !loading">
+    <div v-if="cliente">
       <div class="datos-cliente">
         <v-form v-if="cliente">
           <v-text-field
             :readonly="!editar"
+            :loading="loading"
+            :disabled="loading"
             label="Nombre"
             v-model="cliente.nombre"
           ></v-text-field>
           <v-text-field
             :readonly="!editar"
+            :loading="loading"
+            :disabled="loading"
             label="Teléfono"
             v-model="cliente.telefono"
           ></v-text-field>
           <v-text-field
             :readonly="!editar"
+            :loading="loading"
+            :disabled="loading"
             label="Correo electrónico"
             v-model="cliente.email"
           ></v-text-field>
           <v-text-field
             :readonly="!editar"
+            :loading="loading"
+            :disabled="loading"
             label="Dirección"
             v-model="cliente.direccion"
           ></v-text-field>
           <v-text-field
             :readonly="!editar"
+            :loading="loading"
+            :disabled="loading"
             label="RUT"
             v-model.lazy="rut"
             @input="changeRut"
             :rules="rutRules"
           ></v-text-field>
         </v-form>
+        <v-btn
+          v-if="editar"
+          depressed
+          color="primary"
+          @click="guardarCliente()"
+        >
+          Guardar
+        </v-btn>
       </div>
       <v-divider style="margin: 1.5rem 1rem"></v-divider>
       <div class="header">
@@ -131,6 +149,9 @@
         :items="mascotas"
         class="elevation-0"
       >
+        <template v-slot:[`item.nombre`]="{ item }">
+          <a :href="`/mascotas/${item._id}`">{{ item.nombre }}</a>
+        </template>
         <template v-slot:[`item.peso`]="{ item }">
           {{ item.peso }} kg
         </template>
@@ -220,7 +241,9 @@ export default Vue.extend({
   },
   watch: {
     editar() {
-      this.obtenerCliente();
+      if (!this.editar) {
+        this.obtenerCliente();
+      }
     },
     menu(val) {
       val && setTimeout(() => (this.activePicker = "YEAR"));
@@ -234,6 +257,22 @@ export default Vue.extend({
       this.loading = true;
       try {
         const res = await BackendService.obtenerCliente(this.clienteId);
+        this.cliente = res;
+        this.changeRut(this.cliente.rut);
+        this.obtenerMascotas();
+      } catch (error) {
+        // Handle error
+      } finally {
+        this.loading = false;
+      }
+    },
+    async guardarCliente() {
+      this.loading = true;
+      try {
+        const res = await BackendService.actualizarCliente(
+          this.clienteId,
+          this.cliente
+        );
         this.cliente = res;
         this.changeRut(this.cliente.rut);
         this.obtenerMascotas();

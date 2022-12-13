@@ -130,6 +130,12 @@ export default Vue.extend({
         value: "nombreMascota",
       },
       {
+        text: "Nº Reserva",
+        align: "start",
+        sortable: false,
+        value: "numero",
+      },
+      {
         text: "Acciones",
         align: "start",
         sortable: false,
